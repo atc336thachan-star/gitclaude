@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Không tìm thấy trang | {{ site.site_name }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<div class="wrap page page--narrow empty">
+  {% icon 'circle-alert' 44 %}
+  <h1>Không tìm thấy trang</h1>
+  <p>Liên kết có thể đã thay đổi hoặc không còn tồn tại.</p>
+  <p><a class="btn btn--accent" href="{% url 'catalog:list' %}">Xem sản phẩm</a> <a class="btn btn--line" href="{% url 'core:home' %}">Về trang chủ</a></p>
+</div>
+{% endblock %}

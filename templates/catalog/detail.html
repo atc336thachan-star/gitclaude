@@ -1,0 +1,73 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}{{ product.meta_title|default:product.name }} | {{ site.site_name }}{% endblock %}
+{% block og_title %}{{ product.name }}{% endblock %}
+{% block og_type %}product{% endblock %}
+{% block description %}{{ product.meta_description|default:product.short_description }}{% endblock %}
+{% block canonical %}{{ product.get_absolute_url }}{% endblock %}
+{% block og_image %}{% if product.main_image %}<meta property="og:image" content="{{ SITE_URL }}{{ product.main_image.image.url }}">{% endif %}{% endblock %}
+{% block extra_head %}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"{{ product.name|escapejs }}","sku":"{{ product.sku|escapejs }}"{% if product.short_description %},"description":"{{ product.short_description|escapejs }}"{% endif %}{% if product.main_image %},"image":"{{ SITE_URL }}{{ product.main_image.image.url }}"{% endif %}{% if product.brand %},"brand":{"@type":"Brand","name":"{{ product.brand.name|escapejs }}"}{% endif %}{% if product.price_type == 'fixed' and product.price %},"offers":{"@type":"Offer","priceCurrency":"VND","price":"{{ product.price|floatformat:0 }}","url":"{{ SITE_URL }}{{ product.get_absolute_url }}"}{% endif %}}</script>
+{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  <div class="pdp">
+    <div class="gallery" data-gallery>
+      {% with imgs=product.images.all %}
+        {% if imgs %}
+          <div class="gallery__main"><img id="g-main" src="{{ imgs.0.image.url }}" alt="{{ imgs.0.alt|default:product.name }}"{% if imgs.0.width %} width="{{ imgs.0.width }}" height="{{ imgs.0.height }}"{% endif %} fetchpriority="high"></div>
+          {% if imgs|length > 1 %}<div class="gallery__thumbs">{% for i in imgs %}<button type="button" data-src="{{ i.image.url }}" data-alt="{{ i.alt|default:product.name }}" aria-label="Xem ảnh {{ forloop.counter }}"><img src="{{ i.image.url }}" alt="" loading="lazy" width="80" height="80"></button>{% endfor %}</div>{% endif %}
+        {% else %}<div class="gallery__main gallery__ph">{% icon 'image' 56 %}<span>Chưa có ảnh sản phẩm</span></div>{% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="pdp__info">
+      {% if product.is_demo %}<span class="tag tag--demo">Dữ liệu mẫu</span>{% endif %}
+      <h1>{{ product.name }}</h1>
+      <p class="muted">Mã: <strong>{{ product.sku }}</strong> · <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>{% if product.brand %} · {{ product.brand.name }}{% endif %}</p>
+      <div class="price">
+        {% if product.has_price %}
+          {% if product.price_type == 'reference' %}<small>Giá tham khảo</small>{% endif %}
+          <strong>{{ product.price|vnd }}</strong>{% if product.unit %}<small>/ {{ product.unit }}</small>{% endif %}
+          {% if product.price_type == 'reference' %}<p class="hint">Giá chỉ mang tính tham khảo, cần xác nhận khi báo giá.</p>{% endif %}
+        {% else %}<strong>Liên hệ báo giá</strong>{% if product.unit %}<small>Đơn vị tính: {{ product.unit }}</small>{% endif %}{% endif %}
+      </div>
+      {% if product.short_description %}<p>{{ product.short_description }}</p>{% endif %}
+      <dl class="attrs">
+        {% if product.material %}<dt>Chất liệu</dt><dd>{{ product.material }}</dd>{% endif %}
+        {% if product.size %}<dt>Kích thước</dt><dd>{{ product.size }}</dd>{% endif %}
+        {% if product.thickness %}<dt>Độ dày</dt><dd>{{ product.thickness }}</dd>{% endif %}
+        {% if product.color %}<dt>Màu sắc</dt><dd>{{ product.color }}</dd>{% endif %}
+        {% if product.surface %}<dt>Bề mặt</dt><dd>{{ product.surface }}</dd>{% endif %}
+        {% if product.function %}<dt>Công năng</dt><dd>{{ product.function }}</dd>{% endif %}
+      </dl>
+      <div class="pdp__cta">
+        <a class="btn btn--accent" href="#bao-gia">{% icon 'file-text' 18 %} Yêu cầu báo giá</a>
+        {% if site.hotline %}<a class="btn btn--line" href="tel:{{ site.hotline }}">{% icon 'phone' 18 %} {{ site.hotline }}</a>{% endif %}
+        {% if site.zalo %}<a class="btn btn--line" href="https://zalo.me/{{ site.zalo }}" rel="noopener" target="_blank">{% icon 'message-circle' 18 %} Zalo</a>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    {% if product.description %}<section><h2>Mô tả chi tiết</h2><div class="prose">{{ product.description|safe }}</div></section>{% endif %}
+    {% if product.applications %}<section><h2>Ứng dụng thực tế</h2><div class="prose">{{ product.applications|safe }}</div></section>{% endif %}
+    {% if product.specs.all %}<section><h2>Thông số kỹ thuật</h2><table class="spec"><tbody>{% for s in product.specs.all %}<tr><th scope="row">{{ s.name }}</th><td>{{ s.value }}</td></tr>{% endfor %}</tbody></table></section>{% endif %}
+    {% if product.usage_guide %}<section><h2>Hướng dẫn sử dụng / thi công</h2><div class="prose">{{ product.usage_guide|safe }}</div></section>{% endif %}
+    {% if site.shipping_policy or site.warranty_policy or site.return_policy %}
+    <section><h2>Chính sách</h2>
+      {% if site.shipping_policy %}<h3>Vận chuyển</h3><div class="prose">{{ site.shipping_policy|safe }}</div>{% endif %}
+      {% if site.warranty_policy %}<h3>Bảo hành</h3><div class="prose">{{ site.warranty_policy|safe }}</div>{% endif %}
+      {% if site.return_policy %}<h3>Đổi trả</h3><div class="prose">{{ site.return_policy|safe }}</div>{% endif %}
+    </section>{% endif %}
+  </div>
+
+  <section id="bao-gia" class="panel quote-inline">
+    <h2>Yêu cầu báo giá cho sản phẩm này</h2>
+    {% include "leads/quote_form.html" with form=quote_form %}
+  </section>
+
+  {% if projects %}<section class="sec"><h2 class="sec__t">Công trình sử dụng</h2><div class="grid grid--3">{% for pr in projects %}{% include "partials/project_card.html" %}{% endfor %}</div></section>{% endif %}
+  {% if related %}<section class="sec"><h2 class="sec__t">Sản phẩm liên quan</h2><div class="grid grid--prod">{% for p in related %}{% include "partials/product_card.html" %}{% endfor %}</div></section>{% endif %}
+</div>
+{% endblock %}

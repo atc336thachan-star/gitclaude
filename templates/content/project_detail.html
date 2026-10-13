@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}{{ project.meta_title|default:project.title }} | {{ site.site_name }}{% endblock %}
+{% block og_title %}{{ project.title }}{% endblock %}
+{% block description %}{{ project.meta_description|default:project.summary }}{% endblock %}
+{% block canonical %}{{ project.get_absolute_url }}{% endblock %}
+{% block og_image %}{% if project.cover %}<meta property="og:image" content="{{ SITE_URL }}{{ project.cover.url }}">{% endif %}{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  {% if project.is_demo %}<span class="tag tag--demo">Dữ liệu mẫu</span>{% endif %}
+  <h1>{{ project.title }}</h1>
+  <dl class="attrs">
+    {% if project.location %}<dt>Khu vực</dt><dd>{{ project.location }}</dd>{% endif %}
+    {% if project.project_type %}<dt>Loại công trình</dt><dd>{{ project.project_type }}</dd>{% endif %}
+    {% if project.materials_used %}<dt>Vật liệu</dt><dd>{{ project.materials_used }}</dd>{% endif %}
+  </dl>
+  {% if project.cover %}<img class="cover" src="{{ project.cover.url }}" alt="" width="1200" height="675" fetchpriority="high">{% endif %}
+  <div class="prose">{{ project.description|safe }}</div>
+  {% if project.images.all %}<div class="grid grid--3">{% for i in project.images.all %}<img class="cover" src="{{ i.image.url }}" alt="{{ i.alt }}" loading="lazy" width="640" height="480">{% endfor %}</div>{% endif %}
+  <p><a class="btn btn--accent" href="{% url 'leads:quote' %}">Tư vấn cho công trình tương tự</a></p>
+  {% if products %}<section class="sec"><h2 class="sec__t">Sản phẩm liên quan</h2><div class="grid grid--prod">{% for p in products %}{% include "partials/product_card.html" %}{% endfor %}</div></section>{% endif %}
+</div>
+{% endblock %}

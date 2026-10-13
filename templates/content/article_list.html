@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}{% if category %}{{ category.name }} – {% endif %}Kiến thức vật liệu nội thất{% if page.number > 1 %} – Trang {{ page.number }}{% endif %} | {{ site.site_name }}{% endblock %}
+{% block og_title %}Kiến thức vật liệu nội thất{% endblock %}
+{% block description %}Bài viết hướng dẫn lựa chọn, so sánh, bảo quản và dự toán vật liệu nội thất.{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  <h1>Kiến thức vật liệu</h1>
+  <div class="chips"><a href="{% url 'content:articles' %}" {% if not category %}aria-current="true"{% endif %}>Tất cả</a>
+    {% for c in categories %}<a href="{% url 'content:article_category' c.slug %}" {% if category == c %}aria-current="true"{% endif %}>{{ c.name }}</a>{% endfor %}</div>
+  {% if page.object_list %}
+    <div class="grid grid--3">{% for a in page.object_list %}{% include "partials/article_card.html" %}{% endfor %}</div>
+    {% include "partials/pagination.html" %}
+  {% else %}<div class="empty">{% icon 'file-text' 40 %}<h2>Chưa có bài viết</h2></div>{% endif %}
+</div>
+{% endblock %}

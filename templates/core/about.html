@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Giới thiệu – {{ site.site_name }}{% endblock %}
+{% block og_title %}Giới thiệu – {{ site.site_name }}{% endblock %}
+{% block description %}Giới thiệu {{ site.site_name }}: lĩnh vực hoạt động, quy trình tư vấn và thông tin liên hệ.{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html"  %}
+<div class="wrap page">
+  <h1>Giới thiệu</h1>
+  <div class="prose">{{ site.about_html|safe }}</div>
+  <h2>Quy trình làm việc</h2>
+  <ol class="steps">
+    <li><span>1</span><h3>Tiếp nhận nhu cầu</h3><p>Qua form báo giá, điện thoại hoặc Zalo.</p></li>
+    <li><span>2</span><h3>Tư vấn vật liệu</h3><p>Làm rõ không gian, ngân sách và tiến độ.</p></li>
+    <li><span>3</span><h3>Báo giá</h3><p>Gửi báo giá theo số lượng và điều kiện giao hàng.</p></li>
+    <li><span>4</span><h3>Cung cấp / thi công</h3><p>Theo thỏa thuận được xác nhận.</p></li>
+  </ol>
+  {% if site.service_area %}<h2>Khu vực phục vụ</h2><p>{{ site.service_area }}</p>{% endif %}
+  <p><a class="btn btn--accent" href="{% url 'core:contact' %}">Liên hệ với chúng tôi</a></p>
+</div>
+{% endblock %}

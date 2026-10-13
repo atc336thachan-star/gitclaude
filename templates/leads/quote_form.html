@@ -1,0 +1,25 @@
+{% load ui %}
+<form method="post" action="{% url 'leads:quote' %}" enctype="multipart/form-data" class="form" novalidate data-quote-form>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert--error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="hp" aria-hidden="true">{{ form.website }}</div>
+  {{ form.product }}
+  <div class="form__grid">
+    <div class="field"><label for="{{ form.name.id_for_label }}">Họ tên *</label>{{ form.name }}{% for e in form.name.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+    <div class="field"><label for="{{ form.phone.id_for_label }}">Số điện thoại *</label>
+      <input type="tel" name="phone" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default:'' }}" inputmode="tel" autocomplete="tel" required>{% for e in form.phone.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+    <div class="field"><label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>{{ form.email }}{% for e in form.email.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+    <div class="field"><label for="{{ form.customer_type.id_for_label }}">{{ form.customer_type.label }}</label>{{ form.customer_type }}</div>
+    <div class="field field--full"><label for="{{ form.product_text.id_for_label }}">{{ form.product_text.label }}</label>{{ form.product_text }}{% for e in form.product_text.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+    <div class="field"><label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+      <input type="number" step="any" min="0" inputmode="decimal" name="quantity" id="{{ form.quantity.id_for_label }}" value="{{ form.quantity.value|default:'' }}">{% for e in form.quantity.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+    <div class="field"><label for="{{ form.unit.id_for_label }}">{{ form.unit.label }}</label>{{ form.unit }}</div>
+    <div class="field field--full"><label for="{{ form.province.id_for_label }}">{{ form.province.label }}</label>{{ form.province }}</div>
+    <div class="field field--full checks"><label>{{ form.need_delivery }} {{ form.need_delivery.label }}</label><label>{{ form.need_installation }} {{ form.need_installation.label }}</label></div>
+    <div class="field field--full"><label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>{{ form.message }}{% for e in form.message.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+    <div class="field field--full"><label for="{{ form.attachment.id_for_label }}">{{ form.attachment.label }}</label>
+      <input type="file" name="attachment" id="{{ form.attachment.id_for_label }}" accept=".jpg,.jpeg,.png,.webp,.pdf">{% for e in form.attachment.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+  </div>
+  <button class="btn btn--accent" type="submit">Gửi yêu cầu báo giá</button>
+  <p class="hint">Chúng tôi chỉ dùng thông tin để liên hệ báo giá cho bạn.</p>
+</form>

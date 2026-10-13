@@ -1,0 +1,12 @@
+{% load ui %}
+<article class="card card--wide">
+  <a class="card__media" href="{{ a.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+    {% if a.cover %}<img src="{{ a.cover.url }}" alt="" loading="lazy" decoding="async" width="640" height="480">{% else %}<span class="card__ph">{% icon 'file-text' 36 %}</span>{% endif %}
+    {% if a.is_demo %}<span class="tag tag--demo">Dữ liệu mẫu</span>{% endif %}
+  </a>
+  <div class="card__body">
+    <p class="card__meta">{% if a.category %}{{ a.category.name }} · {% endif %}{{ a.published_at|date:"d/m/Y" }}</p>
+    <h3 class="card__title"><a href="{{ a.get_absolute_url }}">{{ a.title }}</a></h3>
+    <p>{{ a.excerpt }}</p>
+  </div>
+</article>

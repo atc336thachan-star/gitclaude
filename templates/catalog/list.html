@@ -1,0 +1,76 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}{% if category %}{{ category.meta_title|default:category.name }}{% else %}Sản phẩm vật liệu nội thất{% endif %}{% if page.number > 1 %} – Trang {{ page.number }}{% endif %} | {{ site.site_name }}{% endblock %}
+{% block og_title %}{% if category %}{{ category.name }}{% else %}Sản phẩm{% endif %}{% endblock %}
+{% block description %}{% if category %}{{ category.meta_description|default:category.description }}{% else %}Danh sách vật liệu nội thất, lọc theo danh mục, thương hiệu, chất liệu và màu sắc.{% endif %}{% endblock %}
+{% block canonical %}{% if category %}{{ category.get_absolute_url }}{% else %}{% url 'catalog:list' %}{% endif %}{% if page.number > 1 %}?page={{ page.number }}{% endif %}{% endblock %}
+{% block robots %}{% if filtered %}<meta name="robots" content="noindex,follow">{% endif %}{% endblock %}
+{% block extra_head %}
+{% if page.has_previous %}<link rel="prev" href="{{ SITE_URL }}{{ request.path }}{% qs request page=page.previous_page_number %}">{% endif %}
+{% if page.has_next %}<link rel="next" href="{{ SITE_URL }}{{ request.path }}{% qs request page=page.next_page_number %}">{% endif %}
+{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  <h1>{% if category %}{{ category.name }}{% elif q %}Kết quả cho “{{ q }}”{% else %}Sản phẩm{% endif %}</h1>
+  {% if category.description %}<p class="lead">{{ category.description }}</p>{% endif %}
+  <div class="listing">
+    <aside class="filters" id="filters" aria-label="Bộ lọc">
+      <div class="filters__head"><strong>Bộ lọc</strong><button type="button" class="icon-btn" data-close-filters aria-label="Đóng bộ lọc">{% icon 'x' 22 %}</button></div>
+      <nav class="catnav" aria-label="Danh mục">
+        <strong>Danh mục</strong>
+        <ul>
+          <li><a href="{% url 'catalog:list' %}" {% if not category %}aria-current="true"{% endif %}>Tất cả sản phẩm</a></li>
+          {% for c in categories %}
+          <li><a href="{{ c.get_absolute_url }}" {% if category.pk == c.pk or category.parent_id == c.pk %}aria-current="true"{% endif %}>{{ c.name }}</a>
+            {% if category and category.pk == c.pk or category.parent_id == c.pk %}{% if children %}<ul>{% for ch in children %}<li><a href="{{ ch.get_absolute_url }}">{{ ch.name }}</a></li>{% endfor %}</ul>{% endif %}{% endif %}</li>
+          {% endfor %}
+        </ul>
+      </nav>
+      <form method="get" action="{{ request.path }}">
+        {% if q %}<input type="hidden" name="q" value="{{ q }}">{% endif %}
+        <input type="hidden" name="sap-xep" value="{{ sort }}">
+        {% if facets.brands %}<fieldset><legend>Thương hiệu</legend>
+          {% for b in facets.brands %}<label><input type="checkbox" name="thuong-hieu" value="{{ b.slug }}" {% if b.slug in sel_brand %}checked{% endif %}> {{ b.name }}</label>{% endfor %}</fieldset>{% endif %}
+        {% if facets.materials %}<fieldset><legend>Chất liệu</legend>
+          {% for m in facets.materials %}<label><input type="checkbox" name="chat-lieu" value="{{ m }}" {% if m in sel_material %}checked{% endif %}> {{ m }}</label>{% endfor %}</fieldset>{% endif %}
+        {% if facets.colors %}<fieldset><legend>Màu sắc</legend>
+          {% for m in facets.colors %}<label><input type="checkbox" name="mau-sac" value="{{ m }}" {% if m in sel_color %}checked{% endif %}> {{ m }}</label>{% endfor %}</fieldset>{% endif %}
+        {% if facets.functions %}<fieldset><legend>Công năng</legend>
+          {% for m in facets.functions %}<label><input type="checkbox" name="cong-nang" value="{{ m }}" {% if m in sel_function %}checked{% endif %}> {{ m }}</label>{% endfor %}</fieldset>{% endif %}
+        {% if has_prices %}<fieldset><legend>Giá (₫)</legend>
+          <div class="pricerow"><input type="number" min="0" inputmode="numeric" name="gia-tu" placeholder="Từ" value="{{ gia_tu }}" aria-label="Giá từ"><input type="number" min="0" inputmode="numeric" name="gia-den" placeholder="Đến" value="{{ gia_den }}" aria-label="Giá đến"></div>
+          <p class="hint">Chỉ áp dụng cho sản phẩm có giá niêm yết/tham khảo.</p></fieldset>{% endif %}
+        <div class="filters__act"><button class="btn btn--accent btn--sm" type="submit">Áp dụng</button>
+          {% if filtered %}<a class="btn btn--line btn--sm" href="{{ request.path }}">Xóa lọc</a>{% endif %}</div>
+      </form>
+    </aside>
+
+    <section>
+      <div class="toolbar">
+        <button type="button" class="btn btn--line btn--sm filter-open" data-open-filters>{% icon 'sliders-horizontal' 16 %} Lọc{% if n_active %} ({{ n_active }}){% endif %}</button>
+        <p class="count">{{ page.paginator.count }} sản phẩm</p>
+        <form method="get" class="sort" action="{{ request.path }}">
+          {% for k, vals in active.items %}{% for v in vals %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}{% endfor %}
+          {% if q %}<input type="hidden" name="q" value="{{ q }}">{% endif %}
+          <label for="sort" class="sr">Sắp xếp</label>
+          <select id="sort" name="sap-xep" data-autosubmit>{% for key, val in sorts.items %}<option value="{{ key }}" {% if key == sort %}selected{% endif %}>{{ val.1 }}</option>{% endfor %}</select>
+          <noscript><button type="submit">Sắp xếp</button></noscript>
+        </form>
+      </div>
+      {% if page.object_list %}
+        <div class="grid grid--prod">{% for p in page.object_list %}{% include "partials/product_card.html" %}{% endfor %}</div>
+        {% include "partials/pagination.html" %}
+      {% else %}
+        <div class="empty">{% icon 'search' 40 %}
+          <h2>Không tìm thấy sản phẩm phù hợp</h2>
+          <p>{% if filtered %}Hãy thử bỏ bớt bộ lọc hoặc đổi từ khóa.{% else %}Danh mục này chưa có sản phẩm.{% endif %}</p>
+          {% if filtered %}<a class="btn btn--line" href="{{ request.path }}">Xóa bộ lọc</a>{% endif %}
+          <a class="btn btn--accent" href="{% url 'leads:quote' %}">Mô tả nhu cầu để được tư vấn</a>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+  {% if category.seo_content %}<div class="prose seo">{{ category.seo_content|safe }}</div>{% endif %}
+</div>
+<div class="scrim" data-close-filters hidden></div>
+{% endblock %}

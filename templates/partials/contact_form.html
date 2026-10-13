@@ -1,0 +1,13 @@
+{% load ui %}
+<form method="post" action="{% url 'leads:contact_submit' %}" class="form" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert--error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="hp" aria-hidden="true">{{ form.website }}</div>
+  {{ form.source }}
+  <div class="field"><label for="{{ form.name.id_for_label }}">{{ form.name.label }} *</label>{{ form.name }}{% for e in form.name.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+  <div class="field"><label for="{{ form.phone.id_for_label }}">{{ form.phone.label }} *</label>
+    <input type="tel" name="phone" id="{{ form.phone.id_for_label }}" value="{{ form.phone.value|default:'' }}" inputmode="tel" autocomplete="tel" required>{% for e in form.phone.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+  <div class="field"><label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>{{ form.email }}{% for e in form.email.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+  <div class="field"><label for="{{ form.message.id_for_label }}">{{ form.message.label }} *</label>{{ form.message }}{% for e in form.message.errors %}<p class="err">{{ e }}</p>{% endfor %}</div>
+  <button class="btn btn--accent" type="submit">Gửi thông tin</button>
+</form>

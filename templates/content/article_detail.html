@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}{{ article.meta_title|default:article.title }} | {{ site.site_name }}{% endblock %}
+{% block og_title %}{{ article.title }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block description %}{{ article.meta_description|default:article.excerpt }}{% endblock %}
+{% block canonical %}{{ article.get_absolute_url }}{% endblock %}
+{% block og_image %}{% if article.cover %}<meta property="og:image" content="{{ SITE_URL }}{{ article.cover.url }}">{% endif %}{% endblock %}
+{% block extra_head %}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"{{ article.title|escapejs }}","datePublished":"{{ article.published_at|date:'c' }}","dateModified":"{{ article.updated_at|date:'c' }}"{% if article.cover %},"image":"{{ SITE_URL }}{{ article.cover.url }}"{% endif %},"mainEntityOfPage":"{{ SITE_URL }}{{ article.get_absolute_url }}","publisher":{"@type":"Organization","name":"{{ site.site_name|escapejs }}"}}</script>
+{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<article class="wrap page page--narrow">
+  {% if article.is_demo %}<span class="tag tag--demo">Dữ liệu mẫu</span>{% endif %}
+  <h1>{{ article.title }}</h1>
+  <p class="muted">{% if article.category %}{{ article.category.name }} · {% endif %}{{ article.published_at|date:"d/m/Y" }}</p>
+  {% if article.cover %}<img class="cover" src="{{ article.cover.url }}" alt="" width="1200" height="675" fetchpriority="high">{% endif %}
+  <div class="prose">{{ article.body|safe }}</div>
+  <p><a class="btn btn--accent" href="{% url 'leads:quote' %}">Cần tư vấn vật liệu? Yêu cầu báo giá</a></p>
+</article>
+{% if products %}<div class="wrap sec"><h2 class="sec__t">Sản phẩm liên quan</h2><div class="grid grid--prod">{% for p in products %}{% include "partials/product_card.html" %}{% endfor %}</div></div>{% endif %}
+{% if related %}<div class="wrap sec"><h2 class="sec__t">Bài viết liên quan</h2><div class="grid grid--3">{% for a in related %}{% include "partials/article_card.html" %}{% endfor %}</div></div>{% endif %}
+{% endblock %}

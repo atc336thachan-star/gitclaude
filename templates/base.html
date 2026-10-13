@@ -1,0 +1,115 @@
+{% load static ui %}<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block seo %}
+  <title>{% block title %}{{ site.seo_title|default:site.site_name }}{% endblock %}</title>
+  <meta name="description" content="{% block description %}{{ site.seo_description }}{% endblock %}">
+  <link rel="canonical" href="{{ SITE_URL }}{% block canonical %}{{ request.path }}{% endblock %}">
+  {% block robots %}{% endblock %}
+  <meta property="og:site_name" content="{{ site.site_name }}">
+  <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ site.site_name }}{% endblock %}">
+  <meta property="og:url" content="{{ SITE_URL }}{{ request.path }}">
+  {% block og_image %}{% if site.og_image %}<meta property="og:image" content="{{ SITE_URL }}{{ site.og_image.url }}">{% endif %}{% endblock %}
+  {% endblock %}
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block jsonld %}
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"{{ site.site_name|escapejs }}","url":"{{ SITE_URL }}"{% if site.logo %},"logo":"{{ SITE_URL }}{{ site.logo.url }}"{% endif %}{% if site.email or site.hotline %},"contactPoint":{"@type":"ContactPoint","contactType":"customer service"{% if site.hotline %},"telephone":"{{ site.hotline }}"{% endif %}{% if site.email %},"email":"{{ site.email }}"{% endif %}}{% endif %}}</script>
+  {% endblock %}
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+<a class="skip" href="#main">Bỏ qua điều hướng</a>
+<header class="hdr">
+  <div class="wrap hdr__row">
+    <button class="icon-btn nav-toggle" type="button" aria-controls="mobile-nav" aria-expanded="false" aria-label="Mở menu">{% icon 'menu' 24 %}</button>
+    <a class="brand" href="{% url 'core:home' %}">{% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site.site_name }}" height="36">{% else %}<span>{{ site.site_name }}</span>{% endif %}</a>
+    <nav class="nav" aria-label="Chính">
+      <a href="{% url 'catalog:list' %}">Sản phẩm</a>
+      <a href="{% url 'catalog:suppliers' %}">Nhà cung cấp</a>
+      <a href="{% url 'content:projects' %}">Công trình</a>
+      <a href="{% url 'content:articles' %}">Kiến thức</a>
+      <a href="{% url 'core:about' %}">Giới thiệu</a>
+      <a href="{% url 'core:contact' %}">Liên hệ</a>
+    </nav>
+    <form class="search" action="{% url 'catalog:list' %}" role="search">
+      <input type="search" name="q" placeholder="Tìm vật liệu, mã sản phẩm" aria-label="Tìm kiếm" value="{{ q|default:'' }}">
+      <button type="submit" aria-label="Tìm">{% icon 'search' 18 %}</button>
+    </form>
+    <div class="hdr__cta">
+      {% if site.hotline %}<a class="hotline" href="tel:{{ site.hotline }}">{% icon 'phone' 18 %}<span>{{ site.hotline }}</span></a>{% endif %}
+      <a class="btn btn--accent btn--sm" href="{% url 'leads:quote' %}">Yêu cầu báo giá</a>
+    </div>
+  </div>
+  <div class="catbar"><div class="wrap">
+    {% for c in nav_categories %}<a href="{{ c.get_absolute_url }}">{{ c.name }}</a>{% endfor %}
+  </div></div>
+</header>
+
+<div class="drawer" id="mobile-nav" hidden>
+  <div class="drawer__panel">
+    <div class="drawer__head"><strong>{{ site.site_name }}</strong>
+      <button class="icon-btn" type="button" data-close aria-label="Đóng menu">{% icon 'x' 24 %}</button></div>
+    <form class="search search--full" action="{% url 'catalog:list' %}" role="search">
+      <input type="search" name="q" placeholder="Tìm vật liệu, mã sản phẩm" aria-label="Tìm kiếm">
+      <button type="submit" aria-label="Tìm">{% icon 'search' 18 %}</button>
+    </form>
+    <a href="{% url 'catalog:list' %}">Tất cả sản phẩm</a>
+    {% for c in nav_categories %}<a class="sub" href="{{ c.get_absolute_url }}">{{ c.name }}</a>{% endfor %}
+    <a href="{% url 'catalog:suppliers' %}">Nhà cung cấp</a>
+    <a href="{% url 'content:projects' %}">Công trình</a>
+    <a href="{% url 'content:articles' %}">Kiến thức vật liệu</a>
+    <a href="{% url 'core:about' %}">Giới thiệu</a>
+    <a href="{% url 'core:contact' %}">Liên hệ</a>
+  </div>
+  <div class="drawer__scrim" data-close></div>
+</div>
+
+<main id="main">
+  {% if messages %}<div class="wrap">{% for m in messages %}<p class="alert alert--{{ m.tags }}">{{ m }}</p>{% endfor %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="ftr">
+  <div class="wrap ftr__grid">
+    <div>
+      <h2 class="ftr__h">{{ site.site_name }}</h2>
+      {% if site.tagline %}<p>{{ site.tagline }}</p>{% endif %}
+      {% if site.facebook_url %}<p><a href="{{ site.facebook_url }}" rel="noopener" target="_blank">{% icon 'facebook' 18 %} Facebook</a></p>{% endif %}
+    </div>
+    <div>
+      <h2 class="ftr__h">Liên hệ</h2>
+      <ul class="plain">
+        {% if site.hotline %}<li>{% icon 'phone' 16 %} <a href="tel:{{ site.hotline }}">{{ site.hotline }}</a></li>{% endif %}
+        {% if site.zalo %}<li>{% icon 'message-circle' 16 %} <a href="https://zalo.me/{{ site.zalo }}" rel="noopener" target="_blank">Zalo {{ site.zalo }}</a></li>{% endif %}
+        {% if site.email %}<li>{% icon 'mail' 16 %} <a href="mailto:{{ site.email }}">{{ site.email }}</a></li>{% endif %}
+        {% if site.address %}<li>{% icon 'map-pin' 16 %} {{ site.address }}</li>{% endif %}
+        {% if site.working_hours %}<li>{% icon 'clock' 16 %} {{ site.working_hours }}</li>{% endif %}
+      </ul>
+    </div>
+    <div>
+      <h2 class="ftr__h">Khám phá</h2>
+      <ul class="plain">
+        <li><a href="{% url 'catalog:list' %}">Sản phẩm</a></li>
+        <li><a href="{% url 'catalog:suppliers' %}">Nhà cung cấp</a></li>
+        <li><a href="{% url 'content:projects' %}">Công trình</a></li>
+        <li><a href="{% url 'content:articles' %}">Kiến thức vật liệu</a></li>
+        <li><a href="{% url 'leads:quote' %}">Yêu cầu báo giá</a></li>
+        <li><a href="{% url 'core:about' %}">Giới thiệu</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap ftr__copy">© {% now 'Y' %} {{ site.company_name|default:site.site_name }}</div>
+</footer>
+
+<div class="mbar" aria-label="Liên hệ nhanh">
+  {% if site.hotline %}<a href="tel:{{ site.hotline }}">{% icon 'phone' 18 %} Gọi</a>{% endif %}
+  {% if site.zalo %}<a href="https://zalo.me/{{ site.zalo }}" rel="noopener" target="_blank">{% icon 'message-circle' 18 %} Zalo</a>{% endif %}
+  <a class="mbar__main" href="{% url 'leads:quote' %}{% if product %}?san-pham={{ product.slug }}{% endif %}">{% icon 'file-text' 18 %} Báo giá</a>
+</div>
+<script src="{% static 'js/site.js' %}" defer></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

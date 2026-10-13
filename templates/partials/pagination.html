@@ -1,0 +1,8 @@
+{% load ui %}
+{% if page.paginator.num_pages > 1 %}
+<nav class="pager" aria-label="Phân trang">
+  {% if page.has_previous %}<a rel="prev" href="{% qs request page=page.previous_page_number %}">{% icon 'chevron-left' 16 %} Trước</a>{% endif %}
+  <span>Trang {{ page.number }} / {{ page.paginator.num_pages }}</span>
+  {% if page.has_next %}<a rel="next" href="{% qs request page=page.next_page_number %}">Sau {% icon 'chevron-right' 16 %}</a>{% endif %}
+</nav>
+{% endif %}

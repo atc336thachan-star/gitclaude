@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Công trình{% if page.number > 1 %} – Trang {{ page.number }}{% endif %} | {{ site.site_name }}{% endblock %}
+{% block og_title %}Công trình{% endblock %}
+{% block description %}Các công trình sử dụng vật liệu nội thất: khu vực, vật liệu và sản phẩm liên quan.{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  <h1>Công trình</h1>
+  {% if page.object_list %}
+    <div class="grid grid--3">{% for pr in page.object_list %}{% include "partials/project_card.html" %}{% endfor %}</div>
+    {% include "partials/pagination.html" %}
+  {% else %}<div class="empty">{% icon 'building-2' 40 %}<h2>Chưa có công trình được đăng</h2><a class="btn btn--accent" href="{% url 'leads:quote' %}">Trao đổi về công trình của bạn</a></div>{% endif %}
+</div>
+{% endblock %}

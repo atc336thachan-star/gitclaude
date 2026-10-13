@@ -1,0 +1,42 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Nhà cung cấp và đối tác{% if page.number > 1 %} – Trang {{ page.number }}{% endif %} | {{ site.site_name }}{% endblock %}
+{% block og_title %}Nhà cung cấp và đối tác{% endblock %}
+{% block description %}Danh bạ nhà cung cấp và đối tác vật liệu, thiết bị nội thất.{% endblock %}
+{% block robots %}{% if filtered %}<meta name="robots" content="noindex,follow">{% endif %}{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  <h1>Nhà cung cấp và đối tác</h1>
+  <p class="lead">Thông tin liên hệ do từng nhà cung cấp công bố. Liên hệ trực tiếp để được tư vấn.</p>
+  <form class="toolbar" method="get" action="{% url 'catalog:suppliers' %}">
+    <label class="sr" for="sq">Tìm nhà cung cấp</label>
+    <input id="sq" type="search" name="q" value="{{ q }}" placeholder="Tìm theo tên hoặc website" style="max-width:340px">
+    <label class="sr" for="sg">Nhóm</label>
+    <select id="sg" name="nhom" style="width:auto;max-width:300px" data-autosubmit>
+      <option value="">Tất cả nhóm</option>
+      {% for g in groups %}<optgroup label="{{ g.name }}"><option value="{{ g.slug }}" {% if cat == g %}selected{% endif %}>Tất cả {{ g.name }}</option>
+        {% for c in g.children.all %}<option value="{{ c.slug }}" {% if cat == c %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</optgroup>{% endfor %}
+    </select>
+    <button class="btn btn--line btn--sm" type="submit">Tìm</button>
+    <p class="count">{{ page.paginator.count }} nhà cung cấp</p>
+  </form>
+  {% if page.object_list %}
+  <div class="grid grid--3">
+    {% for s in page.object_list %}
+    <article class="card"><div class="card__body">
+      <div class="sup__logo">{% if s.logo %}<img src="{{ s.logo.url }}" alt="" loading="lazy" width="120" height="60">{% else %}{% icon 'building-2' 32 %}{% endif %}</div>
+      <h2 class="card__title">{{ s.name }}</h2>
+      <p class="card__meta">{% for c in s.categories.all|slice:":2" %}{{ c.name }}{% if not forloop.last %} · {% endif %}{% endfor %}</p>
+      <ul class="plain sup__list">
+        {% if s.phone %}<li>{% icon 'phone' 16 %} {{ s.phone }}</li>{% endif %}
+        {% if s.email %}<li>{% icon 'mail' 16 %} {{ s.email }}</li>{% endif %}
+        {% if s.address %}<li>{% icon 'map-pin' 16 %} {{ s.address }}</li>{% endif %}
+        {% if s.website %}<li>{% icon 'arrow-right' 16 %} <a href="{{ s.website }}" rel="nofollow noopener" target="_blank">{{ s.website }}</a></li>{% endif %}
+      </ul>
+    </div></article>
+    {% endfor %}
+  </div>
+  {% include "partials/pagination.html" %}
+  {% else %}<div class="empty">{% icon 'search' 40 %}<h2>Không tìm thấy nhà cung cấp</h2><a class="btn btn--line" href="{% url 'catalog:suppliers' %}">Xóa bộ lọc</a></div>{% endif %}
+</div>
+{% endblock %}

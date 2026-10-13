@@ -1,0 +1,72 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}{{ site.seo_title|default:site.site_name }}{% endblock %}
+{% block og_title %}{{ site.seo_title|default:site.site_name }}{% endblock %}
+{% block content %}
+<section class="hero" {% if site.hero_image %}style="--hero:url('{{ site.hero_image.url }}')"{% endif %}>
+  <div class="wrap hero__grid">
+   <div class="hero__in">
+    <h1>{{ site.hero_title|default:site.site_name }}</h1>
+    {% if site.hero_subtitle %}<p>{{ site.hero_subtitle }}</p>{% endif %}
+    <div class="hero__cta">
+      <a class="btn btn--accent" href="{% url 'catalog:list' %}">Xem sản phẩm</a>
+      <a class="btn btn--ghost" href="{% url 'leads:quote' %}">Nhận báo giá</a>
+    </div>
+   </div>
+   {% if hero_imgs %}<div class="hero__art" aria-hidden="true">{% for i in hero_imgs %}<img src="{{ i.image.url }}" alt="" width="260" height="260" {% if not forloop.first %}loading="lazy"{% endif %}>{% endfor %}</div>{% endif %}
+  </div>
+</section>
+
+{% if categories %}
+<section class="sec wrap">
+  <h2 class="sec__t">Danh mục sản phẩm</h2>
+  <div class="grid grid--cat">
+    {% for c in categories %}
+    <a class="catcard" href="{{ c.get_absolute_url }}">
+      {% if c.cover_url %}<img src="{{ c.cover_url }}" alt="" loading="lazy" width="320" height="240">{% else %}<span class="catcard__ph">{% icon 'layers' 32 %}</span>{% endif %}
+      <span>{{ c.name }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if featured %}
+<section class="sec wrap">
+  <div class="sec__head"><h2 class="sec__t">Sản phẩm được quan tâm</h2><a href="{% url 'catalog:list' %}">Xem tất cả {% icon 'arrow-right' 16 %}</a></div>
+  <div class="grid grid--prod">{% for p in featured %}{% include "partials/product_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+<section class="sec sec--tint"><div class="wrap">
+  <h2 class="sec__t">Quy trình tư vấn và báo giá</h2>
+  <ol class="steps">
+    <li><span>1</span><h3>Gửi nhu cầu</h3><p>Chọn sản phẩm hoặc mô tả không gian, số lượng dự kiến.</p></li>
+    <li><span>2</span><h3>Tư vấn</h3><p>Nhân viên liên hệ để làm rõ nhu cầu và gợi ý vật liệu phù hợp.</p></li>
+    <li><span>3</span><h3>Báo giá</h3><p>Nhận báo giá chi tiết theo số lượng, vận chuyển và thi công (nếu có).</p></li>
+    <li><span>4</span><h3>Triển khai</h3><p>Xác nhận đơn, giao hàng và hỗ trợ trong quá trình sử dụng.</p></li>
+  </ol>
+</div></section>
+
+{% if projects %}
+<section class="sec wrap">
+  <div class="sec__head"><h2 class="sec__t">Công trình</h2><a href="{% url 'content:projects' %}">Xem tất cả {% icon 'arrow-right' 16 %}</a></div>
+  <div class="grid grid--3">{% for pr in projects %}{% include "partials/project_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if articles %}
+<section class="sec wrap">
+  <div class="sec__head"><h2 class="sec__t">Kiến thức vật liệu</h2><a href="{% url 'content:articles' %}">Xem tất cả {% icon 'arrow-right' 16 %}</a></div>
+  <div class="grid grid--3">{% for a in articles %}{% include "partials/article_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+<section class="sec sec--tint"><div class="wrap split">
+  <div>
+    <h2 class="sec__t">Đăng ký tư vấn</h2>
+    <p>Để lại thông tin, chúng tôi sẽ liên hệ lại.</p>
+    {% if site.hotline %}<p><a class="hotline" href="tel:{{ site.hotline }}">{% icon 'phone' 18 %} {{ site.hotline }}</a></p>{% endif %}
+  </div>
+  <div class="panel">{% include "partials/contact_form.html" %}</div>
+</div></section>
+{% endblock %}

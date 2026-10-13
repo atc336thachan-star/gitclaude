@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Đã nhận yêu cầu báo giá | {{ site.site_name }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<div class="wrap page page--narrow">
+  <div class="alert alert--success" role="status">
+    {% icon 'check' 22 %}
+    <div><h1>Đã nhận yêu cầu báo giá</h1>
+    <p>Mã yêu cầu của bạn: <strong>BG-{{ quote_id }}</strong>. Chúng tôi sẽ liên hệ lại{% if site.working_hours %} trong giờ làm việc ({{ site.working_hours }}){% endif %}.</p></div>
+  </div>
+  <p><a class="btn btn--line" href="{% url 'catalog:list' %}">Tiếp tục xem sản phẩm</a></p>
+</div>
+{% endblock %}

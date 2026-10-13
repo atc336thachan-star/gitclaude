@@ -1,0 +1,11 @@
+.venv/
+.env
+db.sqlite3
+media/
+private_media/
+staticfiles/
+__pycache__/
+*.pyc
+backups/
+.claude/
+scratch_*.py

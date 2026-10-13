@@ -1,0 +1,9 @@
+<nav class="crumbs wrap" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{% url 'core:home' %}">Trang chủ</a></li>
+    {% for label, url in items %}
+      {% if url %}<li><a href="{{ url }}">{{ label }}</a></li>{% else %}<li aria-current="page">{{ label }}</li>{% endif %}
+    {% endfor %}
+  </ol>
+</nav>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Trang chủ","item":"{{ SITE_URL }}/"}{% for label, url in items %},{"@type":"ListItem","position":{{ forloop.counter|add:1 }},"name":"{{ label|escapejs }}","item":"{{ SITE_URL }}{% if url %}{{ url }}{% else %}{{ request.path }}{% endif %}"}{% endfor %}]}</script>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Yêu cầu báo giá | {{ site.site_name }}{% endblock %}
+{% block og_title %}Yêu cầu báo giá{% endblock %}
+{% block description %}Gửi yêu cầu báo giá vật liệu nội thất: sản phẩm, số lượng, khu vực công trình.{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page page--narrow">
+  <h1>Yêu cầu báo giá</h1>
+  <p class="lead">Điền thông tin dưới đây, chúng tôi sẽ liên hệ lại để báo giá.</p>
+  {% if product %}<p class="alert alert--info">Sản phẩm: <a href="{{ product.get_absolute_url }}">{{ product.name }}</a> ({{ product.sku }})</p>{% endif %}
+  <div class="panel">{% include "leads/quote_form.html" %}</div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load ui %}
+{% block title %}Liên hệ – {{ site.site_name }}{% endblock %}
+{% block og_title %}Liên hệ – {{ site.site_name }}{% endblock %}
+{% block description %}Thông tin liên hệ và form gửi tin nhắn tới {{ site.site_name }}.{% endblock %}
+{% block content %}
+{% include "partials/breadcrumb.html" %}
+<div class="wrap page">
+  <h1>Liên hệ</h1>
+  <div class="split">
+    <div>
+      <ul class="plain contact-list">
+        {% if site.hotline %}<li>{% icon 'phone' 18 %} Hotline: <a href="tel:{{ site.hotline }}">{{ site.hotline }}</a></li>{% endif %}
+        {% if site.zalo %}<li>{% icon 'message-circle' 18 %} Zalo: <a href="https://zalo.me/{{ site.zalo }}" rel="noopener" target="_blank">{{ site.zalo }}</a></li>{% endif %}
+        {% if site.email %}<li>{% icon 'mail' 18 %} <a href="mailto:{{ site.email }}">{{ site.email }}</a></li>{% endif %}
+        {% if site.address %}<li>{% icon 'map-pin' 18 %} {{ site.address }}</li>{% endif %}
+        {% if site.working_hours %}<li>{% icon 'clock' 18 %} {{ site.working_hours }}</li>{% endif %}
+        {% if site.service_area %}<li>{% icon 'truck' 18 %} Khu vực phục vụ: {{ site.service_area }}</li>{% endif %}
+      </ul>
+      {% if site.address and site.map_embed_url %}
+      <iframe class="map" src="{{ site.map_embed_url }}" title="Bản đồ" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      {% endif %}
+    </div>
+    <div class="panel">
+      {% if done %}
+        <div class="alert alert--success" role="status">{% icon 'check' 18 %} Chúng tôi đã nhận được tin nhắn của bạn và sẽ liên hệ lại sớm.</div>
+      {% else %}{% include "partials/contact_form.html" %}{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

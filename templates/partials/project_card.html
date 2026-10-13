@@ -1,0 +1,12 @@
+{% load ui %}
+<article class="card card--wide">
+  <a class="card__media" href="{{ pr.get_absolute_url }}" tabindex="-1" aria-hidden="true">
+    {% if pr.cover %}<img src="{{ pr.cover.url }}" alt="" loading="lazy" decoding="async" width="640" height="480">{% else %}<span class="card__ph">{% icon 'building-2' 36 %}</span>{% endif %}
+    {% if pr.is_demo %}<span class="tag tag--demo">Dữ liệu mẫu</span>{% endif %}
+  </a>
+  <div class="card__body">
+    <p class="card__meta">{{ pr.project_type }}{% if pr.location %} · {{ pr.location }}{% endif %}</p>
+    <h3 class="card__title"><a href="{{ pr.get_absolute_url }}">{{ pr.title }}</a></h3>
+    <p>{{ pr.summary }}</p>
+  </div>
+</article>
