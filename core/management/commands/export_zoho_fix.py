@@ -49,20 +49,27 @@ class Command(BaseCommand):
         prod = {sku: (cid, slug) for sku, cid, slug in Product.objects.values_list("sku", "category_id", "slug")}
         with open(d / "items.csv", encoding="utf-8-sig", newline="") as f:
             rows = list(csv.DictReader(f))
-        cols = [c for c in rows[0].keys() if c not in ("Category URL", "Product Handle")]
-        cols += ["Category URL", "Product Handle"]
+        extra = ["Category URL", "Product Handle", "Hide Price", "Add To Quote", "Hide Add To Cart"]
+        cols = [c for c in rows[0].keys() if c not in extra] + extra
         missing = 0
         for r in rows:
             cid, slug = prod[r["SKU"]]
             r["Category URL"] = cat_url.get(cid, "")
             r["Product Handle"] = slug
             missing += not r["Category URL"]
+            priced = r["Selling Price"] not in ("", "0")
+            # Sản phẩm "liên hệ báo giá": hiển thị trên cửa hàng, ẩn giá + nút mua, hiện nút Yêu cầu báo giá.
+            r["Status"] = "Active"
+            r["Show in Storefront"] = "true"
+            r["Hide Price"] = "false" if priced else "true"
+            r["Add To Quote"] = "false" if priced else "true"
+            r["Hide Add To Cart"] = "false" if priced else "true"
         with open(d / "items.csv", "w", encoding="utf-8-sig", newline="") as f:
             w = csv.DictWriter(f, fieldnames=cols)
             w.writeheader()
             w.writerows(rows)
-        act = [r for r in rows if r["Status"] == "Active"]
-        rest = [r for r in rows if r["Status"] != "Active"]
+        act = [r for r in rows if r["Selling Price"] not in ("", "0")]  # có giá: đưa vào file 1 để thử trước
+        rest = [r for r in rows if r["Selling Price"] in ("", "0")]
         first = act + rest[: max(0, size - len(act))]
         rest = rest[max(0, size - len(act)):]
         parts = [first] + [rest[i:i + size] for i in range(0, len(rest), size)]
