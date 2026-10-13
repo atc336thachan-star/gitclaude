@@ -1,7 +1,9 @@
 /* Design system — trung tính ấm (kem / xám / gỗ), 1 màu nhấn cho CTA. Breakpoints: 640 / 900 / 1100 */
 :root{
   --bg:#faf8f4; --surface:#fff; --tint:#f1ede6; --line:#e3ddd2; --ink:#2b2a27; --muted:#6c675e;
-  --wood:#8a6a4a; --accent:#b4531f; --accent-ink:#fff; --accent-dark:#933f13; --ok:#2f6b3f; --err:#b3261e;
+  /* Màu thương hiệu lấy từ logo: xanh rừng #276657 (VẬT LIỆU) + vàng #d5a915 (NỘI THẤT). Xem BRAND.md */
+  --brand:#276657; --brand-dark:#1b4a3e; --brand-light:#e6f0ec; --gold:#d5a915; --gold-dark:#b88f0c;
+  --wood:var(--brand); --accent:var(--brand); --accent-ink:#fff; --accent-dark:var(--brand-dark); --ok:#2f6b3f; --err:#b3261e;
   --r:10px; --shadow:0 1px 2px rgba(40,30,20,.06),0 6px 20px rgba(40,30,20,.06);
   --font:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
@@ -55,7 +57,7 @@ h1{font-size:clamp(1.6rem,4vw,2.4rem)} h2{font-size:clamp(1.25rem,2.6vw,1.6rem)}
 .drawer__panel>a.sub{font-weight:400;padding-left:32px;color:var(--muted)}
 
 /* hero */
-.hero{--hero:none;background:linear-gradient(135deg,#5b4632,#8a6a4a 55%,#b99a74);position:relative;color:#fff}
+.hero{--hero:none;background:linear-gradient(135deg,#143a30,#276657 60%,#3b8a74);position:relative;color:#fff}
 .hero::before{content:"";position:absolute;inset:0;background:var(--hero) center/cover no-repeat}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,22,14,.72),rgba(30,22,14,.2))}
 .hero__in{position:relative;z-index:1;padding-top:64px;padding-bottom:72px;max-width:760px;margin-left:0}
@@ -224,3 +226,11 @@ h1,h2,h3{text-wrap:balance}
 @media (min-width:1100px){
   .filters{max-height:calc(100vh - 150px);overflow-y:auto}
 }
+
+/* Nhận diện thương hiệu: vàng chỉ dùng làm điểm nhấn/nền (chữ trên nền vàng phải màu tối) */
+.btn--gold{background:var(--gold);color:var(--ink)} .btn--gold:hover{background:var(--gold-dark);color:#fff}
+.hdr{border-bottom:3px solid var(--gold)}
+.catbar{background:var(--brand-light)}
+.steps span{background:var(--brand)}
+.sec__head h2::after{content:"";display:block;width:44px;height:3px;background:var(--gold);margin-top:8px;border-radius:2px}
+::selection{background:var(--gold);color:var(--ink)}

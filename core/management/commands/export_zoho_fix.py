@@ -72,8 +72,20 @@ class Command(BaseCommand):
         # Show in Storefront = YES/NO, UTF-8 không BOM.
         cols = ["Item Name", "Product Handle", "Description", "Brand", "Selling Price", "SKU", "Category URL",
                 "Show in Storefront", "Hide Add To Cart", "Add To Quote", "Hide Price", "Image URL", "Unit"]
+        # Zoho bắt buộc Item Name duy nhất: bản trùng đầu tiên giữ nguyên, các bản sau thêm " (2)", " (3)"...
+        seen = {}
         for r in rows:
             r["Show in Storefront"] = "YES"
+            k = r["Item Name"].strip().lower()
+            seen[k] = seen.get(k, 0) + 1
+            if seen[k] > 1:
+                r["Item Name"] = f'{r["Item Name"].strip()} ({seen[k]})'
+        # Bỏ 20 sản phẩm đã import thử để tránh báo lỗi "already exists"
+        test = d / "items_test.csv"
+        if test.exists():
+            with open(test, encoding="utf-8", newline="") as f:
+                done = {r["SKU"] for r in csv.DictReader(f)}
+            rows = [r for r in rows if r["SKU"] not in done]
         act = [r for r in rows if r["Selling Price"] not in ("", "0")]  # có giá: đưa vào file 1 để thử trước
         rest = [r for r in rows if r["Selling Price"] in ("", "0")]
         first = act + rest[: max(0, size - len(act))]
