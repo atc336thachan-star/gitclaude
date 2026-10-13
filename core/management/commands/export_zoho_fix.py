@@ -68,6 +68,12 @@ class Command(BaseCommand):
             w = csv.DictWriter(f, fieldnames=cols)
             w.writeheader()
             w.writerows(rows)
+        # Định dạng đã được Zoho chấp nhận khi import thử (20/20 dòng): bỏ Item Type/Product Type/Status/Category Name,
+        # Show in Storefront = YES/NO, UTF-8 không BOM.
+        cols = ["Item Name", "Product Handle", "Description", "Brand", "Selling Price", "SKU", "Category URL",
+                "Show in Storefront", "Hide Add To Cart", "Add To Quote", "Hide Price", "Image URL", "Unit"]
+        for r in rows:
+            r["Show in Storefront"] = "YES"
         act = [r for r in rows if r["Selling Price"] not in ("", "0")]  # có giá: đưa vào file 1 để thử trước
         rest = [r for r in rows if r["Selling Price"] in ("", "0")]
         first = act + rest[: max(0, size - len(act))]
@@ -76,8 +82,8 @@ class Command(BaseCommand):
         for old in d.glob("items_part*.csv"):
             old.unlink()
         for i, part in enumerate(parts, 1):
-            with open(d / f"items_part{i}.csv", "w", encoding="utf-8-sig", newline="") as f:
-                w = csv.DictWriter(f, fieldnames=cols)
+            with open(d / f"items_part{i}.csv", "w", encoding="utf-8", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
                 w.writeheader()
                 w.writerows(part)
         self.stdout.write(self.style.SUCCESS(
