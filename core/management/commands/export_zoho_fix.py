@@ -74,7 +74,11 @@ class Command(BaseCommand):
                 "Show in Storefront", "Hide Add To Cart", "Add To Quote", "Hide Price", "Image URL", "Unit"]
         # Zoho bắt buộc Item Name duy nhất: bản trùng đầu tiên giữ nguyên, các bản sau thêm " (2)", " (3)"...
         seen = {}
+        # Ảnh đã tải về, đổi sang JPG và đặt trên jsDelivr (nhánh "images" của repo): Zoho không tải được webp / URL có "?...".
+        have = {p.stem for p in Path("zoho_images").glob("*.jpg")} if Path("zoho_images").exists() else set()
         for r in rows:
+            r["Image URL"] = (f"https://cdn.jsdelivr.net/gh/atc336thachan-star/gitclaude@images/zoho_images/{r['SKU']}.jpg"
+                              if r["SKU"] in have else "")
             r["Show in Storefront"] = "YES"
             k = r["Item Name"].strip().lower()
             seen[k] = seen.get(k, 0) + 1
