@@ -1,0 +1,154 @@
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body,button,input,textarea,select{font-family:'Space Grotesk',Arial,sans-serif}
+html.vlnt body > div.fixed.inset-x-0,html.vlnt app-footer{display:none!important}
+html.vlnt body,html.vlnt main{background:#fff!important}
+html.vlnt main [class*="md:pt-24"],html.vlnt main [class*="lg:pt-28"]{padding-top:2rem!important}
+html.vlnt-home main h1{display:none}
+html.vlnt-home main [class*="page-max-width"]{width:100%!important;max-width:none!important;padding:0!important}
+html.vlnt-home main [class*="w-3/4"]{width:100%!important}
+html.vlnt-home main section table img{border-radius:20px}
+html.vlnt-home main a[style*="border:2px"]{border-radius:8px}
+#vlnt-top{background:#fff;color:#3e3e3c;font-size:14px;border-bottom:1px solid #eee}
+#vlnt-top .in,#vlnt-head .in{max-width:1400px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#vlnt-top .in{min-height:34px}
+#vlnt-top a{color:#276657;font-weight:700;text-decoration:none}
+#vlnt-head{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08);position:sticky;top:0;z-index:60}
+#vlnt-head .in{min-height:72px}
+#vlnt-head img.logo{height:40px;width:auto;display:block}
+#vlnt-head nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+#vlnt-head nav a{color:#3e3e3c;font-weight:700;font-size:16px;text-decoration:none;padding:4px 12px;border-radius:8px}
+#vlnt-head nav a.on{background:#276657;color:#fff;font-weight:600}
+#vlnt-head .btns{display:flex;gap:12px}
+#vlnt-head .btns a{display:inline-block;height:40px;line-height:38px;padding:0 24px;border:1px solid #276657;border-radius:4px;font-weight:600;font-size:14px;text-decoration:none;color:#276657;background:#fff}
+#vlnt-head .btns a.f{background:#276657;color:#fff}
+#vlnt-foot{background:#fff;color:#3e3e3c;padding:64px 16px 40px;margin-top:0}
+#vlnt-foot .in{max-width:1400px;margin:0 auto;display:flex;flex-wrap:wrap;gap:48px;justify-content:space-between}
+#vlnt-foot .col{flex:1 1 260px}
+#vlnt-foot h2{font-size:16px;font-weight:700;color:#222;text-transform:uppercase;margin:0 0 20px}
+#vlnt-foot p,#vlnt-foot a{font-size:14px;line-height:1.7;color:#3e3e3c;text-decoration:none;display:block;margin:0 0 12px}
+#vlnt-foot p b{color:#3e3e3c}
+#vlnt-foot .fb{display:flex;align-items:center;gap:10px;border:1px solid #ddd;padding:12px;max-width:340px;border-radius:4px}
+#vlnt-foot .fb span{font-size:15px;font-weight:600;color:#365899}
+#vlnt-call{position:fixed;right:20px;bottom:96px;width:56px;height:56px;border-radius:50%;background:#276657;display:flex;align-items:center;justify-content:center;z-index:70;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+#vlnt-call svg{width:26px;height:26px;fill:#fff}
+#vlnt-burger{display:none;width:44px;height:44px;border:1px solid #276657;border-radius:8px;background:#fff;cursor:pointer;padding:0;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+#vlnt-burger i{display:block;width:22px;height:2px;background:#276657;transition:.2s}
+#vlnt-burger.open i:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#vlnt-burger.open i:nth-child(2){opacity:0}
+#vlnt-burger.open i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#vlnt-menu{display:none;background:#fff;border-top:1px solid #eee;box-shadow:0 12px 20px rgba(0,0,0,.1);padding:8px 16px 16px}
+#vlnt-menu.open{display:block}
+#vlnt-menu a{display:block;padding:14px 8px;font-size:17px;font-weight:600;color:#3e3e3c;text-decoration:none;border-bottom:1px solid #f0f0f0}
+#vlnt-menu a.on{color:#276657}
+#vlnt-menu a.cta{margin-top:12px;border:0;background:#276657;color:#fff;text-align:center;border-radius:6px}
+.vl-sec{max-width:1400px;margin:0 auto;padding:56px 16px;font-family:'Space Grotesk',Arial,sans-serif;color:#3e3e3c}
+.vl-sec.alt{max-width:none;background:#f8f3e9}.vl-sec.alt>.vl-in{max-width:1400px;margin:0 auto}
+.vl-sec h2{font-size:34px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;text-align:center;margin:0 0 8px;color:#222}
+.vl-sec .sub{text-align:center;margin:0 auto 32px;max-width:600px;font-size:16px}
+.vl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.vl-card{display:block;background:#fff;border:1px solid #e9e9e9;border-radius:12px;overflow:hidden;text-decoration:none;color:#3e3e3c;transition:box-shadow .2s,transform .2s}
+.vl-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.12);transform:translateY(-3px)}
+.vl-card .im{aspect-ratio:1/1;background:#f6f6f4;display:flex;align-items:center;justify-content:center;position:relative}
+.vl-card .im img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.vl-card .tag{position:absolute;left:10px;top:10px;background:#d4b67b;color:#222;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+.vl-card .bd{padding:14px 16px 18px}
+.vl-card .nm{font-size:16px;font-weight:600;line-height:1.35;min-height:43px;margin:0 0 8px;color:#222}
+.vl-card .pr{font-size:17px;font-weight:700;color:#276657}
+.vl-card .ct{font-size:13px;color:#888;margin-bottom:6px}
+.vl-more{text-align:center;margin-top:28px}
+.vl-more a{display:inline-block;border:2px solid #222;padding:12px 28px;font-weight:700;font-size:14px;color:#222;text-decoration:none;background:#fff;border-radius:8px}
+.vl-news .im{aspect-ratio:4/3}
+.vl-news .im img{width:100%;height:100%;object-fit:cover}
+agents-chatkit .agents-chat-container,agents-chatkit .agents-chat-launcher,agents-chatkit .zia-agents-send-button,agents-chatkit .agents-size-check{background-color:#276657!important}
+agents-chatkit .agents-size-option-name{color:#276657!important}
+agents-chatkit img.agents-chat-bot-avatar,agents-chatkit img.agents-chat-logo-img{content:url(https://raw.githubusercontent.com/atc336thachan-star/gitclaude/images/orig/icon.jpg)!important;object-fit:contain!important;background:#fff!important;border-radius:50%!important;padding:5px!important;box-sizing:border-box}
+@media(max-width:900px){
+#vlnt-head nav,#vlnt-head .btns a.f{display:none}
+#vlnt-burger{display:flex}
+#vlnt-head .in{min-height:60px;flex-wrap:nowrap}
+#vlnt-head img.logo{height:32px}
+#vlnt-head .btns{margin-left:auto}
+#vlnt-head .btns a{padding:0 14px}
+#vlnt-top .in{justify-content:center;font-size:12px;min-height:30px;text-align:center}
+#vlnt-top .in span:last-child{display:none}
+#vlnt-foot{padding:40px 16px 28px}
+#vlnt-foot .in{gap:24px}
+#vlnt-call{right:14px;bottom:84px;width:50px;height:50px}
+.vl-sec{padding:40px 12px}
+.vl-sec h2{font-size:24px}
+.vl-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+.vl-card .nm{font-size:14px;min-height:38px}
+.vl-card .pr{font-size:15px}
+.vl-card .bd{padding:10px 12px 14px}
+html.vlnt-home main section>table>tbody>tr>td,html.vlnt-home main section>table>tr>td{display:block!important;width:100%!important;box-sizing:border-box}
+html.vlnt-home main div[style*="font-size:120px"]{font-size:72px!important;line-height:64px!important;margin-bottom:16px!important}
+html.vlnt-home main div[style*="font-size:36px"],html.vlnt-home main div[style*="font-size:32px"]{font-size:24px!important;line-height:32px!important}
+html.vlnt-home main section td{padding-left:16px!important;padding-right:16px!important}
+html.vlnt-home main section>img{height:230px!important;object-fit:cover}
+}
+@media(max-width:480px){.vl-news{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+var p=location.pathname.replace(/\/+$/,'');
+var editor=/design_mode|store-preview/.test(location.href);
+if(!editor&&(p===''||p==='/home')){location.replace('/page/trang-chu');return;}
+if(editor)return;
+var de=document.documentElement;
+de.classList.add('vlnt');
+if(p==='/page/trang-chu'){de.classList.add('vlnt-home');}
+var IMG='https://raw.githubusercontent.com/atc336thachan-star/gitclaude/images/orig/';
+function nav(href,label){var on=(href==='/page/trang-chu'&&p==='/page/trang-chu')||(href!=='/page/trang-chu'&&p.indexOf(href.split('/').slice(0,3).join('/'))===0&&p!=='');return '<a href="'+href+'"'+(on?' class="on"':'')+'>'+label+'</a>';}
+var DATA={"f":[["may-loc-khong-khi-p500","Máy lọc không khí P500",21000000,"1373992000000124641-20260925123638_images.jpg"],["may-lam-mem-nuoc-615ecm","Máy làm mềm nước 615ECM",56038000,"1373992000000124622-20261004090215_images.jpg"],["khoa-vicode-vp-k10","Khóa thông minh Vicode VP-K10",16300000,"1373992000000124734-khoa-vicode-vp-k10-6ec7.png"],["khoa-thong-minh-avolock-ac-994","Khóa thông minh Avolock AC 994",27590000,"1373992000000126565-20260927101808_screenshot_1790504268.png"],["khoa-thong-minh-fastlock-f11","Khóa thông minh FASTLOCK - F1.1",35000000,"1373992000000126527-20261003100643_screenshot_1791021622.png"],["khoa-vicode-vs-600","Khoá thông minh VICODE VS-600",8700000,"1373992000000124914-khoa-vicode-vs-600-566e.png"],["khoa-thong-minh-fastlock-f21","Khóa thông minh FASTLOCK - F2.1",15500000,"1373992000000126413-20261003110623_screenshot_1791025460.png"],["khoa-vicode-vs-310","Khoá VICODE VS-310",5900000,"1373992000000124876-khoa-vicode-vs-310-c003.png"]],"b":[["may-loc-nuoc-uong-truc-tiep-ro-ero220-3","Máy lọc nước uống trực tiếp RO ERO220-3",17900000,"1373992000000125595-20261003084814_images.jpg"],["khoa-thong-minh-vicode-vs-510","Khóa thông minh Vicode VS-510",6800000,"1373992000000126546-20260928113841_Khoa-thong-minh-Vicode-VS-510.png"],["khoa-thong-minh-vicode-vp-900","Khóa thông minh Vicode VP-900",12300000,"1373992000000125063-20260928042857_VICODE-1-768x768.png"],["may-loc-khong-khi-va-tao-am-h300","Máy lọc không khí và tạo ẩm H300",16800000,"1373992000000125948-20260925104512_may-loc-khong-khi-ket-hop-tao-am-boneco-h300.jpg"],["khoa-vicode-vs-300","Khoá thông minh VICODE VS-300",5700000,"1373992000000124857-khoa-vicode-vs-300-3690.png"],["khoa-vicode-vp-910","Khóa thông minh VIcode VP-910",12300000,"1373992000000124715-khoa-vicode-vp910-1-8c3e.png"],["may-lam-mem-nuoc-evolution-300-boost","Máy làm mềm nước EVOLUTION 300 Boost",96493000,"1373992000000125671-20261003082053_images.jpg"],["khoa-vicode-vs-100","Khoá thông minh VICODE VS-100",3700000,"1373992000000124772-khoa-vicode-vs-100-a088.png"]]};
+var PI='https://orion.zohoecommerce.com/942610129/product-images/';
+function money(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+'₫';}
+function card(r,tag){return '<a class="vl-card" href="/products/'+r[0]+'"><div class="im"><img loading="lazy" src="'+PI+r[3]+'" alt="'+r[1].replace(/"/g,'')+'">'+(tag?'<span class="tag">'+tag+'</span>':'')+'</div><div class="bd"><div class="nm">'+r[1]+'</div><div class="pr">'+money(r[2])+'</div></div></a>';}
+var NEWS=[['KHÓA THÔNG MINH DÀNH CHO NGƯỜI TIÊU DÙNG THÔNG THÁI','12/05/2025','n1.jpg'],['BÁO GIÁ TẤM PVC VÂN ĐÁ','18/11/2021','n2.jpg'],['THI CÔNG LẮP ĐẶT RÈM','23/06/2021','n3.jpg'],['THI CÔNG SÀN NHỰA','08/06/2021','n4.jpg']];
+function sec(cls,title,sub,body,more){var d=document.createElement('div');d.className='vl-sec '+cls;d.innerHTML='<div class="vl-in"><h2>'+title+'</h2><p class="sub">'+sub+'</p>'+body+(more?'<div class="vl-more"><a href="'+more[0]+'">'+more[1]+' &rarr;</a></div>':'')+'</div>';return d;}
+function home(){
+ if(p!=='/page/trang-chu'||document.getElementById('vl-feat'))return;
+ var secs=document.querySelectorAll('main section');
+ var feat=sec('','Sản phẩm tiêu biểu','Những sản phẩm được khách hàng quan tâm và lựa chọn nhiều tại vatlieunoithat.vn.','<div class="vl-grid">'+DATA.f.map(function(r){return card(r,'Tiêu biểu')}).join('')+'</div>',['/collections/all-products','Xem tất cả sản phẩm']);
+ feat.id='vl-feat';
+ var best=sec('alt','Sản phẩm bán chạy','Các sản phẩm được xem và hỏi giá nhiều nhất.','<div class="vl-grid">'+DATA.b.map(function(r){return card(r,'Bán chạy')}).join('')+'</div>',['/collections/all-products','Xem thêm sản phẩm']);
+ var news=sec('','Tin tức &amp; sự kiện','Cập nhật báo giá, hướng dẫn thi công và hoạt động mới nhất.','<div class="vl-grid vl-news">'+NEWS.map(function(n){return '<a class="vl-card" href="https://www.facebook.com/vatlieunoithat.vn/" target="_blank" rel="noopener"><div class="im"><img loading="lazy" src="'+IMG+'news/'+n[2]+'" alt=""></div><div class="bd"><div class="ct">'+n[1]+'</div><div class="nm">'+n[0]+'</div></div></a>'}).join('')+'</div>',['https://www.facebook.com/vatlieunoithat.vn/','Xem thêm tin tức']);
+ var ref=null;for(var i=0;i<secs.length;i++){if(secs[i].innerText.trim().indexOf('LĨNH VỰC')===0&&!secs[i].querySelector('section')){ref=secs[i];break}}
+ if(!ref)return;
+ ref.parentNode.insertBefore(feat,ref);
+ ref.parentNode.insertBefore(best,ref);
+ var last=secs[secs.length-1];
+ for(var j=secs.length-1;j>=0;j--){if(!secs[j].querySelector('section')){last=secs[j];break}}
+last.parentNode.insertBefore(news,last.nextSibling);
+}
+function burger(){
+ var head=document.getElementById('vlnt-head');if(!head||document.getElementById('vlnt-burger'))return;
+ var b=document.createElement('button');b.id='vlnt-burger';b.setAttribute('aria-label','Menu');b.innerHTML='<i></i><i></i><i></i>';
+ head.querySelector('.in').appendChild(b);
+ var m=document.createElement('div');m.id='vlnt-menu';
+ m.innerHTML=[['/page/trang-chu','Trang chủ'],['/collections/all-products','Sản phẩm'],['/page/yeu-cau-bao-gia','Báo giá'],['/page/lien-he','Liên hệ']].map(function(x){return '<a href="'+x[0]+'"'+(p===x[0]?' class="on"':'')+'>'+x[1]+'</a>'}).join('')+'<a class="cta" href="/page/yeu-cau-bao-gia">Nhận báo giá</a>';
+ head.appendChild(m);
+ b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
+}
+function build(){
+ if(document.getElementById('vlnt-head'))return;
+ var h=document.createElement('div');
+ h.innerHTML='<div id="vlnt-top"><div class="in"><span>Liên hệ: <a href="tel:0948487868">0948487868</a> - <a href="tel:0903232317">0903232317</a></span><span>Email: <a href="mailto:vatlieunoithat.vn@gmail.com">vatlieunoithat.vn@gmail.com</a></span></div></div>'+
+ '<div id="vlnt-head"><div class="in"><a href="/page/trang-chu"><img class="logo" src="'+IMG+'logo.png" alt="Vật liệu nội thất"></a><nav>'+nav('/page/trang-chu','Trang chủ')+nav('/collections/all-products','Sản phẩm')+nav('/page/yeu-cau-bao-gia','Báo giá')+nav('/page/lien-he','Liên hệ')+'</nav><div class="btns"><a href="/cart">Giỏ hàng</a><a class="f" href="/page/yeu-cau-bao-gia">Nhận báo giá</a></div></div></div>';
+ document.body.insertBefore(h,document.body.firstChild);
+ var f=document.createElement('div');
+ f.id='vlnt-foot';
+ f.innerHTML='<div class="in"><div class="col"><h2>Thông tin liên hệ</h2><p><b>Địa chỉ:</b> Tầng B1 Sảnh Thương mại R1 Royal City, 72 Nguyễn Trãi - Thanh Xuân - Hà Nội</p><p><b>Email:</b> <a style="display:inline" href="mailto:vatlieunoithat.vn@gmail.com">vatlieunoithat.vn@gmail.com</a></p><p><b>Website:</b> <a style="display:inline" href="https://vatlieunoithat.vn">vatlieunoithat.vn</a></p></div>'+
+ '<div class="col"><h2>Liên hệ</h2><a href="/page/trang-chu">Về chúng tôi</a><a href="/collections/all-products">Sản phẩm</a><a href="/page/yeu-cau-bao-gia">Tư vấn báo giá</a><a href="/page/lien-he">Liên hệ</a></div>'+
+ '<div class="col"><h2>Mạng xã hội</h2><a class="fb" href="https://www.facebook.com/vatlieunoithat.vn/" target="_blank" rel="noopener"><span>Nội Thất Trực Tuyến</span><span style="font-weight:400;color:#666;font-size:13px">Facebook</span></a></div></div>'+
+ '<a id="vlnt-call" href="tel:0988716132" aria-label="Gọi ngay" style="margin:0"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.6 3.6a1 1 0 0 1-.25 1z"/></svg></a>';
+ burger();home();
+ var ft=document.querySelector('footer');
+ if(ft&&ft.parentNode){ft.parentNode.insertBefore(f,ft);}else{document.body.appendChild(f);}
+}
+var n=0,done=0,t=setInterval(function(){home();
+ if(!done&&innerWidth<900){var c=document.querySelector('agents-chatkit .agents-chat-close');var w=document.querySelector('agents-chatkit .agents-chat-container');if(c&&w&&w.getBoundingClientRect().width>0){done=1;c.click();}}
+ if(++n>40)clearInterval(t)},500);
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',build);}else{build();}
+})();
+</script>
