@@ -143,7 +143,9 @@ function build(){
  var ft=document.querySelector('footer');
  if(ft&&ft.parentNode){ft.parentNode.insertBefore(f,ft);}else{document.body.appendChild(f);}
 }
-var n=0,t=setInterval(function(){home();if(++n>20)clearInterval(t)},500);
+var n=0,done=0,t=setInterval(function(){home();
+ if(!done&&innerWidth<900){var c=document.querySelector('agents-chatkit .agents-chat-close');if(c&&c.getBoundingClientRect().width>0){done=1;['pointerdown','mousedown','pointerup','mouseup','click'].forEach(function(e){c.dispatchEvent(new MouseEvent(e,{bubbles:true}))});}}
+ if(++n>40)clearInterval(t)},500);
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',build);}else{build();}
 })();
 </script>
