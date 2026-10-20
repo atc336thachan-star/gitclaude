@@ -85,6 +85,7 @@ html.vlnt-home main section>table>tbody>tr>td,html.vlnt-home main section>table>
 html.vlnt-home main div[style*="font-size:120px"]{font-size:72px!important;line-height:64px!important;margin-bottom:16px!important}
 html.vlnt-home main div[style*="font-size:36px"],html.vlnt-home main div[style*="font-size:32px"]{font-size:24px!important;line-height:32px!important}
 html.vlnt-home main section td{padding-left:16px!important;padding-right:16px!important}
+html.vlnt-home main section>img{height:230px!important;object-fit:cover}
 }
 @media(max-width:480px){.vl-news{grid-template-columns:1fr}}
 </style>
@@ -108,15 +109,17 @@ function sec(cls,title,sub,body,more){var d=document.createElement('div');d.clas
 function home(){
  if(p!=='/page/trang-chu'||document.getElementById('vl-feat'))return;
  var secs=document.querySelectorAll('main section');
- if(secs.length<3)return;
  var feat=sec('','Sản phẩm tiêu biểu','Những sản phẩm được khách hàng quan tâm và lựa chọn nhiều tại vatlieunoithat.vn.','<div class="vl-grid">'+DATA.f.map(function(r){return card(r,'Tiêu biểu')}).join('')+'</div>',['/collections/all-products','Xem tất cả sản phẩm']);
  feat.id='vl-feat';
  var best=sec('alt','Sản phẩm bán chạy','Các sản phẩm được xem và hỏi giá nhiều nhất.','<div class="vl-grid">'+DATA.b.map(function(r){return card(r,'Bán chạy')}).join('')+'</div>',['/collections/all-products','Xem thêm sản phẩm']);
  var news=sec('','Tin tức &amp; sự kiện','Cập nhật báo giá, hướng dẫn thi công và hoạt động mới nhất.','<div class="vl-grid vl-news">'+NEWS.map(function(n){return '<a class="vl-card" href="https://www.facebook.com/vatlieunoithat.vn/" target="_blank" rel="noopener"><div class="im"><img loading="lazy" src="'+IMG+'news/'+n[2]+'" alt=""></div><div class="bd"><div class="ct">'+n[1]+'</div><div class="nm">'+n[0]+'</div></div></a>'}).join('')+'</div>',['https://www.facebook.com/vatlieunoithat.vn/','Xem thêm tin tức']);
- var ref=secs[2];
+ var ref=null;for(var i=0;i<secs.length;i++){if(secs[i].innerText.trim().indexOf('LĨNH VỰC')===0&&!secs[i].querySelector('section')){ref=secs[i];break}}
+ if(!ref)return;
  ref.parentNode.insertBefore(feat,ref);
  ref.parentNode.insertBefore(best,ref);
- var last=secs[secs.length-1];last.parentNode.insertBefore(news,last.nextSibling);
+ var last=secs[secs.length-1];
+ for(var j=secs.length-1;j>=0;j--){if(!secs[j].querySelector('section')){last=secs[j];break}}
+last.parentNode.insertBefore(news,last.nextSibling);
 }
 function burger(){
  var head=document.getElementById('vlnt-head');if(!head||document.getElementById('vlnt-burger'))return;
