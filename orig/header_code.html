@@ -141,12 +141,24 @@ function newspage(){
  if(h1&&h1.parentNode){h1.parentNode.insertBefore(d,h1.nextSibling);}else{m.insertBefore(d,m.firstChild);}
  d.querySelector('.vl-chips').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var c=b.getAttribute('data-c');d.querySelectorAll('.vl-chips button').forEach(function(x){x.classList.toggle('on',x===b)});d.querySelectorAll('.vl-card').forEach(function(a){a.style.display=(c==='Tất cả'||a.getAttribute('data-c')===c)?'':'none'});});
 }
+function openZia(){
+ var w=document.querySelector('agents-chatkit .agents-chat-container');
+ if(w&&w.getBoundingClientRect().width>0)return;
+ var l=document.querySelector('agents-chatkit .agents-chat-launcher');if(l)l.click();
+}
+document.addEventListener('click',function(e){
+ var a=e.target.closest&&e.target.closest('a[data-zia]');if(!a)return;
+ e.preventDefault();
+ var m=document.getElementById('vlnt-menu'),b=document.getElementById('vlnt-burger');
+ if(m)m.classList.remove('open');if(b)b.classList.remove('open');
+ openZia();
+});
 function burger(){
  var head=document.getElementById('vlnt-head');if(!head||document.getElementById('vlnt-burger'))return;
  var b=document.createElement('button');b.id='vlnt-burger';b.setAttribute('aria-label','Menu');b.innerHTML='<i></i><i></i><i></i>';
  head.querySelector('.in').appendChild(b);
  var m=document.createElement('div');m.id='vlnt-menu';
- m.innerHTML=[['/page/trang-chu','Trang chủ'],['/collections/all-products','Sản phẩm'],['/page/yeu-cau-bao-gia','Báo giá'],['/page/tin-tuc','Tin tức &amp; Sự kiện'],['/page/lien-he','Liên hệ']].map(function(x){return '<a href="'+x[0]+'"'+(p===x[0]?' class="on"':'')+'>'+x[1]+'</a>'}).join('')+'<a class="cta" href="/page/yeu-cau-bao-gia">Nhận báo giá</a>';
+ m.innerHTML=[['/page/trang-chu','Trang chủ'],['/collections/all-products','Sản phẩm'],['/page/yeu-cau-bao-gia','Báo giá'],['/page/tin-tuc','Tin tức &amp; Sự kiện'],['#zia','Trợ lý Zia'],['/page/lien-he','Liên hệ']].map(function(x){return '<a href="'+x[0]+'"'+(x[0]==='#zia'?' data-zia="1"':'')+(p===x[0]?' class="on"':'')+'>'+x[1]+'</a>'}).join('')+'<a class="cta" href="/page/yeu-cau-bao-gia">Nhận báo giá</a>';
  head.appendChild(m);
  b.addEventListener('click',function(){b.classList.toggle('open');m.classList.toggle('open');});
 }
@@ -154,7 +166,7 @@ function build(){
  if(document.getElementById('vlnt-head'))return;
  var h=document.createElement('div');
  h.innerHTML='<div id="vlnt-top"><div class="in"><span>Liên hệ: <a href="tel:0948487868">0948487868</a> - <a href="tel:0903232317">0903232317</a></span><span>Email: <a href="mailto:vatlieunoithat.vn@gmail.com">vatlieunoithat.vn@gmail.com</a></span></div></div>'+
- '<div id="vlnt-head"><div class="in"><a href="/page/trang-chu"><img class="logo" src="'+IMG+'logo.png" alt="Vật liệu nội thất"></a><nav>'+nav('/page/trang-chu','Trang chủ')+nav('/collections/all-products','Sản phẩm')+nav('/page/yeu-cau-bao-gia','Báo giá')+nav('/page/tin-tuc','Tin tức &amp; Sự kiện')+nav('/page/lien-he','Liên hệ')+'</nav><div class="btns"><a href="/cart">Giỏ hàng</a><a class="f" href="/page/yeu-cau-bao-gia">Nhận báo giá</a></div></div></div>';
+ '<div id="vlnt-head"><div class="in"><a href="/page/trang-chu"><img class="logo" src="'+IMG+'logo.png" alt="Vật liệu nội thất"></a><nav>'+nav('/page/trang-chu','Trang chủ')+nav('/collections/all-products','Sản phẩm')+nav('/page/yeu-cau-bao-gia','Báo giá')+nav('/page/tin-tuc','Tin tức &amp; Sự kiện')+'<a href="#" data-zia="1">Trợ lý Zia</a>'+nav('/page/lien-he','Liên hệ')+'</nav><div class="btns"><a href="/cart">Giỏ hàng</a><a class="f" href="/page/yeu-cau-bao-gia">Nhận báo giá</a></div></div></div>';
  document.body.insertBefore(h,document.body.firstChild);
  var f=document.createElement('div');
  f.id='vlnt-foot';
